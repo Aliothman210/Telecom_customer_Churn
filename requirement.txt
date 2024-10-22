@@ -1,0 +1,3 @@
+scikit-learn==version_number
+xgboost==version_number (if using xgboost)
+lightgbm==version_number (if using lightgbm)
