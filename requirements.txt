@@ -1,6 +1,1 @@
 
-
-pickle
-streamlit
-collections
-pandas
