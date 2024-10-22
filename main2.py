@@ -6,25 +6,25 @@ import pandas as pd
 from collections import Counter
 
 # Load encoders
-Gender_le = pkl.load(open('Encoding/gender_le.pkl', 'rb'))
-Internetservice_le = pkl.load(open('Encoding/InternetService_le.pkl', 'rb'))
-Paymentmethod_le = pkl.load(open('Encoding/PaymentMethod_le.pkl', 'rb'))
-Tenure_le = pkl.load(open('Encoding/tenure_group_le.pkl', 'rb'))
-Contract_Oe = pkl.load(open('Encoding/Contract_oe.pkl', 'rb'))
+Gender_le = pkl.load(open('gender_le.pkl', 'rb'))
+Internetservice_le = pkl.load(open('InternetService_le.pkl', 'rb'))
+Paymentmethod_le = pkl.load(open('PaymentMethod_le.pkl', 'rb'))
+Tenure_le = pkl.load(open('tenure_group_le.pkl', 'rb'))
+Contract_Oe = pkl.load(open('Contract_oe.pkl', 'rb'))
 
 # Load scaler and models
-scaler = pkl.load(open('Scaling/scaler.pkl', 'rb'))
+scaler = pkl.load(open('scaler.pkl', 'rb'))
 models = {
-    'Decision Tree': pkl.load(open('Models/Decision Tree.pkl', 'rb')),
-    'Logistic Regression': pkl.load(open('Models/LogisticRegression.pkl', 'rb')),
-    'SVC': pkl.load(open('Models/SVC.pkl', 'rb')),
-    'KNN': pkl.load(open('Models/KNN.pkl', 'rb')),
-    'GaussianNB': pkl.load(open('Models/GaussianNB.pkl', 'rb')),
-    'Random Forest': pkl.load(open('Models/RandomForest.pkl', 'rb')),
-    'Gradient boosting': pkl.load(open('Models/GradientBoosting.pkl','rb')),
-    'XGBoost': pkl.load(open('Models/XGBoost.pkl', 'rb')),
-    'AdaBoost': pkl.load(open('Models/AdaBoost.pkl', 'rb')),
-    'Stacking': pkl.load(open('Models/Stacking.pkl', 'rb')),
+    'Decision Tree': pkl.load(open('Decision Tree.pkl', 'rb')),
+    'Logistic Regression': pkl.load(open('LogisticRegression.pkl', 'rb')),
+    'SVC': pkl.load(open('SVC.pkl', 'rb')),
+    'KNN': pkl.load(open('KNN.pkl', 'rb')),
+    'GaussianNB': pkl.load(open('GaussianNB.pkl', 'rb')),
+    'Random Forest': pkl.load(open('RandomForest.pkl', 'rb')),
+    'Gradient boosting': pkl.load(open('GradientBoosting.pkl','rb')),
+    'XGBoost': pkl.load(open('XGBoost.pkl', 'rb')),
+    'AdaBoost': pkl.load(open('AdaBoost.pkl', 'rb')),
+    'Stacking': pkl.load(open('Stacking.pkl', 'rb')),
 }
 
 # Function to predict churn
