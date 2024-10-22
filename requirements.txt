@@ -1,5 +1,5 @@
 xgboost
-numpy
+
 pickle
 streamlit
 collections
