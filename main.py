@@ -1,6 +1,7 @@
 import numpy as np
 import pickle as pkl
 import streamlit as st
+import xgboost
 import pandas as pd
 from collections import Counter
 
