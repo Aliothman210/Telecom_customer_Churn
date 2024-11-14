@@ -6,10 +6,10 @@ import pandas as pd
 from collections import Counter
 
 # Load encoders
-Gender_le = pkl.load(open('gender_le.pkl', 'rb'))
+
 Internetservice_le = pkl.load(open('InternetService_le.pkl', 'rb'))
 Paymentmethod_le = pkl.load(open('PaymentMethod_le.pkl', 'rb'))
-Tenure_le = pkl.load(open('tenure_group_le.pkl', 'rb'))
+
 Contract_Oe = pkl.load(open('Contract_oe.pkl', 'rb'))
 
 # Load scaler and models
@@ -19,7 +19,6 @@ models = {
     'Logistic Regression': pkl.load(open('LogisticRegression.pkl', 'rb')),
     'SVC': pkl.load(open('SVC.pkl', 'rb')),
     'KNN': pkl.load(open('KNN.pkl', 'rb')),
-    'GaussianNB': pkl.load(open('GaussianNB.pkl', 'rb')),
     'Random Forest': pkl.load(open('RandomForest.pkl', 'rb')),
     'Gradient boosting': pkl.load(open('GradientBoosting.pkl','rb')),
     'XGBoost': pkl.load(open('XGBoost.pkl', 'rb')),
