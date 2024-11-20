@@ -18,7 +18,7 @@ models = {
     'Logistic Regression': pkl.load(open('Deployment_Churn/Models/LogisticRegression.pkl', 'rb')),
     'SVC': pkl.load(open('Deployment_Churn/Models/SVC.pkl', 'rb')),
     'KNN': pkl.load(open('Deployment_Churn/Models/KNN.pkl', 'rb')),
-    'GaussianNB': pkl.load(open('Deployment_Churn/Models/GaussianNB.pkl', 'rb')),
+    
     'Random Forest': pkl.load(open('Deployment_Churn/Models/RandomForest.pkl', 'rb')),
     'Gradient Boosting': pkl.load(open('Deployment_Churn/Models/GradientBoosting.pkl', 'rb')),
     'XGBoost': pkl.load(open('Deployment_Churn/Models/XGBoost.pkl', 'rb')),
@@ -31,7 +31,7 @@ def predict_churn(input_data):
     predictions = {}
     for name, model in models.items():
         pred = model.predict(input_data)[0]
-        predictions[name] = "Churn" if pred == 1 else "Not Churn"
+        predictions[name] = "Churn" if pred == 1 else "Stays"
     return predictions
 
 # Function to display predictions with mode highlighted
@@ -39,38 +39,58 @@ def display_predictions(predictions):
     st.markdown("<h2 style='text-align: center; color: #4A90E2;'>⚜️Prediction Results⚜️</h2>", unsafe_allow_html=True)
     st.markdown("---")
     
-    col1, col2 = st.columns([1, 1], gap="large")  # Two equal-width columns
+    # Create three equal-width columns
+    col1, col2, col3 = st.columns([1, 1, 1], gap="large")
     
-    # Split predictions into two parts
+    # Convert predictions to a list of items
     predictions_items = list(predictions.items())
-    first_half = predictions_items[:5]
-    second_half = predictions_items[5:]
-
-    # Display first half in the first column
+    
+    # Divide predictions into three roughly equal parts
+    col1_items = predictions_items[0::3]
+    col2_items = predictions_items[1::3]
+    col3_items = predictions_items[2::3]
+    
+    # Display predictions in the first column
     with col1:
-        for model, result in first_half:
+        for model, result in col1_items:
             st.markdown(
                 f"<p style='font-size:15px; text-align: center;'>"
                 f"<b>{model}:</b> <span style='color: #FFA500;'>{result}</span>"
                 f"</p>", unsafe_allow_html=True
             )
-
-    # Display second half in the second column
+    
+    # Display predictions in the second column
     with col2:
-        for model, result in second_half:
+        for model, result in col2_items:
             st.markdown(
                 f"<p style='font-size:15px; text-align: center;'>"
                 f"<b>{model}:</b> <span style='color: #FFA500;'>{result}</span>"
                 f"</p>", unsafe_allow_html=True
             )
-
-    # Calculate and display mode in larger font
+    
+    # Display predictions in the third column
+    with col3:
+        for model, result in col3_items:
+            st.markdown(
+                f"<p style='font-size:15px; text-align: center;'>"
+                f"<b>{model}:</b> <span style='color: #FFA500;'>{result}</span>"
+                f"</p>", unsafe_allow_html=True
+            )
+    
+    # Calculate and display the mode in larger font
     mode_result = Counter(predictions.values()).most_common(1)[0][0]
-    if mode_result == "Not Churn":
-        st.markdown(f"""<h1 style='text-align: center;font-size:55px; color: white;'>The Customer Status: <span style='color: #27AE60;'>{mode_result}✅</span></h1>""", unsafe_allow_html=True)
+    if mode_result == "Stays":
+        st.markdown(
+            f"<h1 style='text-align: center;font-size:55px; color: white;'>"
+            f"The Customer Status: <span style='color: #27AE60;'>{mode_result}✅</span>"
+            f"</h1>", unsafe_allow_html=True
+        )
     else:
-        st.markdown(f"""<h1 style='text-align: center;font-size:55px; color: white;'>The Customer Status: <span style='color: #E74C3C;'>{mode_result}😡</span></h1>""", unsafe_allow_html=True)
-
+        st.markdown(
+            f"<h1 style='text-align: center;font-size:55px; color: white;'>"
+            f"The Customer Status: <span style='color: #E74C3C;'>{mode_result}😡</span>"
+            f"</h1>", unsafe_allow_html=True
+        )
 # Function to save user input in a dictionary
 def save_user_data(gender, SeniorCitizen, Partner, Dependents, tenure, PhoneService,
                    MultipleLines, InternetService, OnlineSecurity, OnlineBackup,
