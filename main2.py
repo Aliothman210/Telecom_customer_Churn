@@ -2,14 +2,14 @@ import numpy as np
 import pickle as pkl
 import streamlit as st
 import pandas as pd
-
 from collections import Counter
 
 # Load encoders
-
+# Load encoders
+Gender_le = pkl.load(open('gender_le.pkl', 'rb'))
 Internetservice_le = pkl.load(open('InternetService_le.pkl', 'rb'))
 Paymentmethod_le = pkl.load(open('PaymentMethod_le.pkl', 'rb'))
-
+Tenure_le = pkl.load(open('tenure_group_le.pkl', 'rb'))
 Contract_Oe = pkl.load(open('Contract_oe.pkl', 'rb'))
 
 # Load scaler and models
@@ -20,7 +20,7 @@ models = {
     'SVC': pkl.load(open('SVC.pkl', 'rb')),
     'KNN': pkl.load(open('KNN.pkl', 'rb')),
     'Random Forest': pkl.load(open('RandomForest.pkl', 'rb')),
-    'Gradient boosting': pkl.load(open('GradientBoosting.pkl','rb')),
+    'Gradient Boosting': pkl.load(open('GradientBoosting.pkl', 'rb')),
     'XGBoost': pkl.load(open('XGBoost.pkl', 'rb')),
     'AdaBoost': pkl.load(open('AdaBoost.pkl', 'rb')),
     'Stacking': pkl.load(open('Stacking.pkl', 'rb')),
@@ -31,46 +31,101 @@ def predict_churn(input_data):
     predictions = {}
     for name, model in models.items():
         pred = model.predict(input_data)[0]
-        predictions[name] = "Churn" if pred == 1 else "Not Churn"
+        predictions[name] = "Churn" if pred == 1 else "Stays"
     return predictions
 
 # Function to display predictions with mode highlighted
 def display_predictions(predictions):
     st.markdown("<h2 style='text-align: center; color: #4A90E2;'>⚜️Prediction Results⚜️</h2>", unsafe_allow_html=True)
     st.markdown("---")
-    #---------------------------------
-    col1, col2 = st.columns([1, 1], gap="large")  # Two equal-width columns
     
-    # Split predictions into two parts
+    # Create three equal-width columns
+    col1, col2, col3 = st.columns([1, 1, 1], gap="large")
+    
+    # Convert predictions to a list of items
     predictions_items = list(predictions.items())
-    first_half = predictions_items[:5]
-    second_half = predictions_items[5:]
-
-    # Display first half in the first column
+    
+    # Divide predictions into three roughly equal parts
+    col1_items = predictions_items[0::3]
+    col2_items = predictions_items[1::3]
+    col3_items = predictions_items[2::3]
+    
+    # Display predictions in the first column
     with col1:
-        for model, result in first_half:
+        for model, result in col1_items:
             st.markdown(
                 f"<p style='font-size:15px; text-align: center;'>"
                 f"<b>{model}:</b> <span style='color: #FFA500;'>{result}</span>"
                 f"</p>", unsafe_allow_html=True
             )
-
-    # Display second half in the second column
+    
+    # Display predictions in the second column
     with col2:
-        for model, result in second_half:
+        for model, result in col2_items:
             st.markdown(
                 f"<p style='font-size:15px; text-align: center;'>"
                 f"<b>{model}:</b> <span style='color: #FFA500;'>{result}</span>"
                 f"</p>", unsafe_allow_html=True
             )
-    #----------------------------
-    # Calculate and display mode in larger font#27AE60
+    
+    # Display predictions in the third column
+    with col3:
+        for model, result in col3_items:
+            st.markdown(
+                f"<p style='font-size:15px; text-align: center;'>"
+                f"<b>{model}:</b> <span style='color: #FFA500;'>{result}</span>"
+                f"</p>", unsafe_allow_html=True
+            )
+    
+    # Calculate and display the mode in larger font
     mode_result = Counter(predictions.values()).most_common(1)[0][0]
-    if mode_result=="Not Churn":
-     st.markdown(f"""<h1 style='text-align: center;font-size:55px; color: white;'>The Customer Status: <span style='color: #27AE60;'>{mode_result}✅</span></h1>""", unsafe_allow_html=True)
-    else :
-     st.markdown(f"""<h1 style='text-align: center;font-size:55px; color: white;'>The Customer Status: <span style='color: #E74C3C;'>{mode_result}😡</span></h1>""", unsafe_allow_html=True)
+    if mode_result == "Stays":
+        st.markdown(
+            f"<h1 style='text-align: center;font-size:55px; color: white;'>"
+            f"The Customer Status: <span style='color: #27AE60;'>{mode_result}✅</span>"
+            f"</h1>", unsafe_allow_html=True
+        )
+    else:
+        st.markdown(
+            f"<h1 style='text-align: center;font-size:55px; color: white;'>"
+            f"The Customer Status: <span style='color: #E74C3C;'>{mode_result}😡</span>"
+            f"</h1>", unsafe_allow_html=True
+        )
+# Function to save user input in a dictionary
+def save_user_data(gender, SeniorCitizen, Partner, Dependents, tenure, PhoneService,
+                   MultipleLines, InternetService, OnlineSecurity, OnlineBackup,
+                   DeviceProtection, TechSupport, StreamingTV, StreamingMovies,
+                   Contract, PaperlessBilling, PaymentMethod, MonthlyCharges, TotalCharges, prediction):
+    
+    # Create a dictionary with all inputs and the prediction result
+    user_data = {
+        'Gender': gender,
+        'SeniorCitizen': SeniorCitizen,
+        'Partner': Partner,
+        'Dependents': Dependents,
+        'Tenure': tenure,
+        'PhoneService': PhoneService,
+        'MultipleLines': MultipleLines,
+        'InternetService': InternetService,
+        'OnlineSecurity': OnlineSecurity,
+        'OnlineBackup': OnlineBackup,
+        'DeviceProtection': DeviceProtection,
+        'TechSupport': TechSupport,
+        'StreamingTV': StreamingTV,
+        'StreamingMovies': StreamingMovies,
+        'Contract': Contract,
+        'PaperlessBilling': PaperlessBilling,
+        'PaymentMethod': PaymentMethod,
+        'MonthlyCharges': MonthlyCharges,
+        'TotalCharges': TotalCharges,
+        'Prediction': prediction
+    }
 
+    # Save the data in session_state for persistence
+    if 'user_data_list' not in st.session_state:
+        st.session_state['user_data_list'] = []
+    
+    st.session_state['user_data_list'].append(user_data)
 
 # Initialize session state for predictions
 if 'predictions' not in st.session_state:
@@ -78,10 +133,10 @@ if 'predictions' not in st.session_state:
 
 # Streamlit UI
 st.set_page_config(page_title="Customer Churn Prediction", page_icon="📉", layout="wide")
-st.title("📞Telecom Customer Churn Prediction")
+st.title(" 📞Telecom Customer Churn Prediction")
 st.markdown('Predict whether a customer will churn based on various attributes.')
 
-#photo
+# Photo
 page_bg_img = """
 <style>
 [data-testid="stAppViewContainer"] {
@@ -144,26 +199,38 @@ Contract_encod = Contract_Oe.transform([[Contract]])[0][0]
 PaperlessBilling_encod = 1 if PaperlessBilling == 'Yes' else 0
 PaymentMethod_encod = Paymentmethod_le.transform([PaymentMethod])[0]
 
-# Prepare input for model prediction
-input_data1 = np.array([[
-    SeniorCitizen_encod, Partner_encod, Dependents_encod,
-    PhoneService_encod, MultipleLines_encod, InternetService_encod,
-    OnlineSecurity_encod, OnlineBackup_encod, DeviceProtection_encod,
-    TechSupport_encod, StreamingTV_encod, StreamingMovies_encod,
-    Contract_encod, PaperlessBilling_encod, PaymentMethod_encod
-]])
+# Create input data array
+input_data1 = np.array([[ SeniorCitizen_encod, Partner_encod, Dependents_encod
+                        , PhoneService_encod, MultipleLines_encod, InternetService_encod,
+                        OnlineSecurity_encod, OnlineBackup_encod, DeviceProtection_encod,
+                        TechSupport_encod, StreamingTV_encod, StreamingMovies_encod,
+                        Contract_encod, PaperlessBilling_encod, PaymentMethod_encod
+                        ]])
 input_data2 = np.array([[MonthlyCharges, TotalCharges, tenure]])
+# Scale input data
 input_data3 = scaler.transform(input_data2)
 input_data = np.concatenate((input_data1, input_data3), axis=1)
 
-# Button to trigger prediction
-#if st.button("🔍 Predict Churn"):
-# st.session_state['predictions'] = predict_churn(input_data)
+
+
+
+# Button to trigger prediction and save data
 if st.button("🔍 Predict Churn"):
     predictions = predict_churn(input_data)
+    mode_result = Counter(predictions.values()).most_common(1)[0][0]
+
+    # Save the user's inputs along with the prediction result
+    save_user_data(gender, SeniorCitizen, Partner, Dependents, tenure, PhoneService,
+                   MultipleLines, InternetService, OnlineSecurity, OnlineBackup,
+                   DeviceProtection, TechSupport, StreamingTV, StreamingMovies,
+                   Contract, PaperlessBilling, PaymentMethod, MonthlyCharges, TotalCharges, mode_result)
+
+    # Display the predictions
     display_predictions(predictions)
 
-# Display predictions if available
-    #if st.session_state['predictions']:
-     # display_predictions(st.session_state['predictions'])
-
+# Optional: Display saved data
+if st.button("Show All User Data"):
+    if 'user_data_list' in st.session_state and st.session_state['user_data_list']:
+        st.write(pd.DataFrame(st.session_state['user_data_list']))
+    else:
+        st.write("No user data saved yet.")
