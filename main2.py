@@ -20,7 +20,7 @@ models = {
     'SVC': pkl.load(open('SVC.pkl', 'rb')),
     'KNN': pkl.load(open('KNN.pkl', 'rb')),
     'Random Forest': pkl.load(open('RandomForest.pkl', 'rb')),
-    'Gradient Boosting': pkl.load(open('GradientBoosting.pkl', 'rb')),
+    'Gradient Boosting': pkl.load(open('GradientBoosting1.pkl', 'rb')),
     'XGBoost': pkl.load(open('XGBoost.pkl', 'rb')),
     'AdaBoost': pkl.load(open('AdaBoost.pkl', 'rb')),
     'Stacking': pkl.load(open('Stacking.pkl', 'rb')),
