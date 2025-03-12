@@ -78,3 +78,5 @@ The stacking model provided the most reliable predictions, achieving 84.5% accur
 Streamlit Deployment: We deployed a web-based application where users can input customer details and get churn predictions based on the ensemble model.
 
 Power BI Dashboard: An interactive dashboard was developed to visualize key insights, trends, and churn factors dynamically.
+
+You can check the whole project from that link: https://drive.google.com/drive/folders/1oqlWdtqGb5YjGdL6oz5bil_WPUDKF85P?usp=sharing
