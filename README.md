@@ -1,35 +1,9 @@
-Telecom Customer Churn Prediction
+*Telecom Customer Churn Prediction*
 
 📌 Project Overview
 
 This project focuses on predicting customer churn in the telecom industry using machine learning techniques. By analyzing customer data, we aim to identify patterns that indicate potential churn and help businesses implement retention strategies. Additionally, we developed an interactive dashboard using Power BI and deployed a Streamlit web application that utilizes multiple machine learning models to provide churn predictions.
 
-📁 Project Structure
-
-📂 Telecom-Customer-Churn
-│-- 📁 data                  # Dataset and preprocessing scripts
-│-- 📁 notebooks             # Jupyter notebooks for analysis
-│-- 📁 models                # Trained models and scripts
-│-- 📁 src                   # Source code for preprocessing, training, and evaluation
-│-- 📁 deployment            # Streamlit app and deployment files
-│-- 📁 dashboard             # Power BI dashboard files
-│-- 📜 README.md             # Project documentation (this file)
-│-- 📜 requirements.txt      # Dependencies
-│-- 📜 main.py               # Main script to run the model
-
-🚀 Installation & Setup
-
-Clone the repository:
-
-git clone https://github.com/your-username/telecom-churn.git
-
-Navigate to the project directory:
-
-cd telecom-churn
-
-Install dependencies:
-
-pip install -r requirements.txt
 
 📊 Dataset Description
 
